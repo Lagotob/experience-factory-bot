@@ -8,8 +8,12 @@ class Database:
 
     async def connect(self):
         """Create connection pool to database"""
-        self.pool = await asyncpg.create_pool(DATABASE_URL)
-        print("✅ Database connected!")
+        try:
+            self.pool = await asyncpg.create_pool(DATABASE_URL, min_size=1, max_size=5)
+            print("✅ Database connected!")
+        except Exception as e:
+            print(f"❌ Database connection error: {e}")
+            raise
 
     async def create_tables(self):
         """Create tables if they don't exist"""

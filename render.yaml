@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: experience-factory-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: ADMIN_IDS
+        sync: false
+      - key: GROUP_ID
+        sync: false

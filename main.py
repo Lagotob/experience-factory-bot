@@ -1,10 +1,9 @@
 import asyncio
 import logging
-import os
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-from config import BOT_TOKEN, DATABASE_URL, ADMIN_IDS, GROUP_ID
+from config import BOT_TOKEN
 from database import db
 
 # Enable logging
@@ -24,27 +23,17 @@ dp.include_router(moderation_router)
 
 
 async def main():
-    print("🤖 Bot is starting...")
+    print("🤖 Experience Factory Bot is starting...")
 
     # Connect to database
-    try:
-        await db.connect()
-        print("✅ Database connected!")
-    except Exception as e:
-        print(f"❌ Database connection failed: {e}")
-        return
+    await db.connect()
 
     # Create tables
-    try:
-        await db.create_tables()
-        print("✅ Tables created successfully!")
-    except Exception as e:
-        print(f"❌ Table creation failed: {e}")
-        return
+    await db.create_tables()
 
-    # Start bot polling (simpler than webhook)
-    print("🚀 Starting bot polling...")
+    # Start bot
     await bot.delete_webhook(drop_pending_updates=True)
+    print("✅ Bot is running!")
     await dp.start_polling(bot)
 
 

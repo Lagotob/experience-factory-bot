@@ -20,11 +20,15 @@ async def cmd_start(message: types.Message):
     await db.create_user(user.id, user.username, user.first_name, user.last_name)
     user_data = await db.get_user(user.id)
 
+    xp = user_data["xp"] if user_data else 0
+    coins = user_data["coins"] if user_data else 0
+    lvl = user_data["level"] if user_data else 1
+
     await message.answer(
         f"👋 <b>Xush kelibsiz, {user.first_name}!</b>\n\n"
-        f"⭐ XP: {user_data['xp'] if user_data else 0}\n"
-        f"🪙 Tanga: {user_data['coins'] if user_data else 0}\n"
-        f"📈 Daraja: {user_data['level'] if user_data else 1}\n\n"
+        f"⭐ XP: {xp}\n"
+        f"🪙 Tanga: {coins}\n"
+        f"📈 Daraja: {lvl}\n\n"
         f"/my_stats - Profil\n"
         f"/submit_quest - Topshiriq\n"
         f"/help - Yordam"
@@ -50,14 +54,21 @@ async def cmd_stats(message: types.Message):
         await message.answer("❌ /start bosing")
         return
 
+    ct = user_data.get("completed_tasks")
+    if ct is None:
+        ct = user_data.get("total_quests", 0)
+    wc = user_data.get("warnings_count")
+    if wc is None:
+        wc = user_data.get("warnings", 0)
+
     await message.answer(
         f"📊 <b>Profil</b>\n\n"
         f"👤 {user_data['first_name']}\n"
         f"⭐ XP: {user_data['xp']}\n"
         f"🪙 Tanga: {user_data['coins']}\n"
         f"📈 Daraja: {user_data['level']}\n"
-        f"✅ Topshiriqlar: {user_data['total_quests']}\n"
-        f"⚠️ Ogohlantirish: {user_data['warnings']}/3"
+        f"✅ Topshiriqlar: {ct}\n"
+        f"⚠️ Ogohlantirish: {wc}/3"
     )
 
 

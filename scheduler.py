@@ -22,7 +22,7 @@ async def send_daily_report(bot: Bot, group_id: int):
         daily_top = await db.get_daily_top_users(limit=3)
 
         if daily_top:
-            report_text = "📊 <b>KUNNING ENG FAOL ISHCHILARI</b> 📊\n\n"
+            report_text = "📊 <b>TOP ISHCHILAR (XP)</b> 📊\n\n"
 
             for i, user in enumerate(daily_top, 1):
                 medal = ""
@@ -40,7 +40,7 @@ async def send_daily_report(bot: Bot, group_id: int):
                     name_display = name
 
                 report_text += f"{medal}: {name_display}\n"
-                report_text += f"   ✅ {user['quests_count']} topshiriq bajarildi\n\n"
+                report_text += f"   ⭐ {user['xp']} XP | ✅ {user['completed_tasks']} topshiriq\n\n"
 
             report_text += "\n💪 Yana ham ko'proq topshiriqlar bajarib, liderlar qatoriga chiqing!"
 

@@ -2,9 +2,12 @@ services:
   - type: worker
     name: experience-factory-bot
     env: python
-    buildCommand: pip install -r requirements.txt
+    # Python 3.14 da pydantic-core uchun wheel bo'lmasa Rust/maturin xato beradi — 3.11 majburiy
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: python main.py
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
       - key: BOT_TOKEN
         sync: false
       - key: DATABASE_URL
